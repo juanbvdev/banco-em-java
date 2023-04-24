@@ -27,12 +27,11 @@ public class Banco {
     }
     
     public static int buscaNome(String nomes[], String nome){
-        int c, cont = 0;
+        int c;
         for(c = 0; c < 10; c++){
             if(nomes[c].equals(nome)){
-                return cont;
+                return c;
             }
-            cont++;
         }
         
         return -1;
@@ -52,6 +51,35 @@ public class Banco {
         
     }
     
+    public static void formataCPF(String cpf){
+        int begin = 0;
+        int end = 3;
+        
+        int c = 0;
+           String dig3 = cpf.substring(begin, end);
+        
+        for(c = 0; c <= 3; c++){
+        
+            switch (c) {
+                case 2 -> System.out.print(dig3 + "-");
+                case 3 -> System.out.print(dig3);
+                default -> System.out.print(dig3 + ".");
+            }
+            
+            if(c == 3){
+                begin += 0;
+                end += 0;
+            }else{
+                begin += 3;
+                end += 3;
+            }
+            
+            dig3 = cpf.substring(begin, end);
+            
+        }
+        
+    }
+    
     public static int escolheUser(String nome, String cel, String cpf, float saldo){
         int op=0;
         
@@ -59,7 +87,8 @@ public class Banco {
         
         System.out.print("\nNome: " + nome);
         System.out.print("\nCelular: " + cel);
-        System.out.print("\nCPF: " + cpf);
+        System.out.print("\nCPF: ");
+        formataCPF(cpf);
         System.out.print("\nSaldo: R$" + saldo);
         
         System.out.print("\nO que deseja fazer?\n\n");
@@ -78,7 +107,7 @@ public class Banco {
     
     public static void main(String[] args) {
         boolean temLetra;
-        int user[] = new int[11], c=0, cont=0;
+        int c=0, cont=0;
         int op0 = 0, op1 = 0, op2 = 0, op3 = 0, op4 = 0;
         float saldo[] = new float[11];
         String nome[] = new String[11], cel[] = new String[11];
@@ -102,7 +131,7 @@ public class Banco {
             while(op1 == 1){
                 cpf[c] = "0";
                 if(c > 9){
-                    System.out.print("Já atingimos o limite de usuários...");
+                    System.out.print("Já atingimos o limite de usuários...\n");
                     break;
                 }
                 System.out.print("Cadastrando Cliente...\n\n");
@@ -111,8 +140,8 @@ public class Banco {
                 nome[c] = s.nextLine();
                 while(true){
                     System.out.print("CPF: ");
-                    cpf[c] = s.nextLine();
-                    if(cpf[c].length() != 11){
+                    cpf[c] = s.nextLine() + " ";
+                    if(cpf[c].length() != 12){
                         System.out.println("Informe um cpf valido: ");
                     }else{
                         temLetra = cpfSemLetra(cpf[c]);
