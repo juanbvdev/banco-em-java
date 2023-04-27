@@ -5,6 +5,7 @@
 package com.mycompany.banco;
 
 import java.util.Scanner;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -29,9 +30,12 @@ public class Banco {
     public static int buscaNome(String nomes[], String nome){
         int c;
         for(c = 0; c < 10; c++){
-            if(nomes[c].equals(nome)){
-                return c;
+            if(nomes[c] != null){
+                if(nomes[c].equals(nome)){
+                    return c;
+                }
             }
+            
         }
         
         return -1;
@@ -62,7 +66,7 @@ public class Banco {
         
             switch (c) {
                 case 2 -> System.out.print(dig3 + "-");
-                case 3 -> System.out.print(dig3);
+                case 3 -> System.out.print(dig3 + "\n");
                 default -> System.out.print(dig3 + ".");
             }
             
@@ -83,13 +87,11 @@ public class Banco {
     public static int escolheUser(String nome, String cel, String cpf, float saldo){
         int op=0;
         
-        System.out.print("-=-=-=-=-=-=-=-=-=-=-");
-        
-        System.out.print("\nNome: " + nome);
-        System.out.print("\nCelular: " + cel);
-        System.out.print("\nCPF: ");
+        System.out.println("Nome: " + nome);
+        System.out.println("Celular: " + cel);
+        System.out.print("CPF: ");
         formataCPF(cpf);
-        System.out.print("\nSaldo: R$" + saldo);
+        System.out.println("Saldo: R$" + saldo);
         
         System.out.print("\nO que deseja fazer?\n\n");
         System.out.print("1 - Adicionar crédito\n2 - Debitar\n3 - Atualizar Celular");
@@ -107,11 +109,11 @@ public class Banco {
     
     public static void main(String[] args) {
         boolean temLetra;
-        int c=0, cont=0;
+        int c=0, cont=0, aa=0;
         int op0 = 0, op1 = 0, op2 = 0, op3 = 0, op4 = 0;
         float saldo[] = new float[11];
         String nome[] = new String[11], cel[] = new String[11];
-        String cpf[] = new String[11], search;
+        String cpf[] = new String[11], search, newCel;
         
 //------------------------------------------------------------------------------
         
@@ -129,24 +131,21 @@ public class Banco {
             }
             
             while(op1 == 1){
-                cpf[c] = "0";
                 if(c > 9){
-                    System.out.print("Já atingimos o limite de usuários...\n");
+                    JOptionPane.showMessageDialog(null, "Já atingimos o limite de usuários...\n");
                     break;
                 }
-                System.out.print("Cadastrando Cliente...\n\n");
+                JOptionPane.showMessageDialog(null, "Cadastrando Cliente...");
 
-                System.out.print("Nome: ");
-                nome[c] = s.nextLine();
+                nome[c] = JOptionPane.showInputDialog("Nome: ");
                 while(true){
-                    System.out.print("CPF: ");
-                    cpf[c] = s.nextLine() + " ";
+                    cpf[c] = JOptionPane.showInputDialog("CPF: ") + " ";
                     if(cpf[c].length() != 12){
-                        System.out.println("Informe um cpf valido: ");
+                        JOptionPane.showMessageDialog(null, "Informe um cpf valido: ");
                     }else{
                         temLetra = cpfSemLetra(cpf[c]);
                         if(temLetra == true){
-                            System.out.println("Informe um cpf valido:");
+                            JOptionPane.showMessageDialog(null, "Informe um cpf valido:");
                         }else{
                             break;
                         }
@@ -154,22 +153,21 @@ public class Banco {
                 }
                 
 
-                System.out.print("Celular: ");
-                cel[c] = s.nextLine();
+                cel[c] = JOptionPane.showInputDialog("Celular: ");
 
                 saldo[c] = 0;
                 c++;
 
-                System.out.print("Deseja cadastrar outro usuário?\n");
-                System.out.print("1 para sim\n0 para não: ");
-                op1 = i.nextInt();
+                aa = JOptionPane.showConfirmDialog(null, "Deseja cadastrar outro usuário?");
+                if(aa == JOptionPane.NO_OPTION){
+                    break;
+                }
             }
         
             while(op1 == 2){
-                op2 = 0;
                 
-                System.out.print("\n-=-Selecionar Usuário-=-\n\n");
-                System.out.print("1 - Buscar por nome\n2 - Buscar por CPF\n");
+                JOptionPane.showMessageDialog(null, "Selecionar Usuário");
+                System.out.print("\n1 - Buscar por nome\n2 - Buscar por CPF\n");
                 System.out.print("3 - Mostrar lista de usuários\n");
                 System.out.print("4 - Voltar\n");
                 System.out.print("Escolha: ");
@@ -177,33 +175,26 @@ public class Banco {
                 System.out.print("\n");
                 
                 if(op2 == 1){
-                    op3 = 0;
-                    search = "";
-                    System.out.print("Nome: ");
-                    search = s.nextLine();
+                    search = JOptionPane.showInputDialog("Nome: ");
                     op3 = buscaNome(nome, search);
                     
                     if(op3 == -1){
-                        System.out.print("Não foi possível encontrar \"" + search + "\"...");
+                        JOptionPane.showMessageDialog(null, "Não foi possível encontrar \"" + search + "\"...");
                         break;
                     }
                 }
                 
                 if(op2 == 2){
-                    op3 = 0;
-                    search = "";
-                    System.out.print("CPF: ");
-                    search = s.nextLine();
+                    search = JOptionPane.showInputDialog("CPF: ") + " ";
                     op3 = buscaCPF(cpf, search);
                     
                     if(op3 == -1){
-                        System.out.print("Não foi possível encontrar o CPF \"" + search + "\"...");
+                        JOptionPane.showMessageDialog(null, "Não foi possível encontrar o CPF \"" + search + "\"...");
                         break;
                     }
                 }
                 
                 if(op2 == 3){
-                    op3 = 0;
                     cont = 0;
                     for(String nome2: nome){
                         if(nome2 != null){
@@ -216,7 +207,6 @@ public class Banco {
                 }
                 
                 if(op2 == 4){
-                    op3 = 0;
                     break;
                 }
                 
@@ -228,13 +218,14 @@ public class Banco {
                     System.out.print(saldo[op3]);
                     System.out.print("\nPara cancelar digite um valor negativo...");
                     System.out.print("\nCrédito à adicionar: R$");
-                    if(cred < 0){
-                        System.out.print("Nenhum valor foi creditado.");
+                    cred = f.nextFloat();
+                    
+                    if(cred <= 0){
+                        JOptionPane.showMessageDialog(null, "Nenhum valor foi creditado.");
                         break;
                     }
-                    saldo[op3] += f.nextFloat();
-                    System.out.print("Novo saldo de " + nome[op3] + ": ");
-                    System.out.print(saldo[op3]);
+                    saldo[op3] += cred;
+                    JOptionPane.showMessageDialog(null, "Novo saldo de " + nome[op3] + ": R$" + saldo[op3]);
                 }
                 if(op4 == 2){
                     float deb = 0;
@@ -243,21 +234,18 @@ public class Banco {
                     System.out.print("\nPara cancelar digite um valor negativo...");
                     System.out.print("\nValor à debitar: R$");
                     deb = f.nextFloat();
-                    if(deb < 0){
-                        System.out.print("Nenhum valor foi debitado.");
+                    if(deb <= 0){
+                        JOptionPane.showMessageDialog(null, "Nenhum valor foi debitado.");
                         break;
                     }
                     saldo[op3] -= deb;
-                    System.out.print("Novo saldo de " + nome[op3] + ": ");
-                    System.out.print(saldo[op3]);
+                    JOptionPane.showMessageDialog(null, "Novo saldo de " + nome[op3] + ": R$" + saldo[op3]);
                 }
                 if(op4 == 3){
-                    String newCel = "";
                     System.out.print("Número de " + nome[op3] + ": ");
                     System.out.print(cel[op3]);
                     System.out.print("\nPara cancelar deixe vazio...");
-                    System.out.print("\nNovo número: ");
-                    newCel = s.nextLine();
+                    newCel = JOptionPane.showInputDialog("\nNovo número: ");
                     if(newCel.isEmpty()){
                         System.out.print("Numero não foi alterado.");
                         break;
@@ -269,6 +257,6 @@ public class Banco {
                 }
             }
         }
-        System.out.print("Obrigado por usar Bertacander!");
+        System.out.print("\nObrigado por usar Bertacander!");
     }
 }
